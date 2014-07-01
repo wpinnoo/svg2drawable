@@ -8,7 +8,7 @@ import rsvg
 from xml.dom.minidom import parse
 
 import util
-
+import optparse
 
 class AndroidProject:
   def __init__(self, directory):
@@ -54,8 +54,8 @@ class AndroidProject:
       raise Exception("Res path not found in this project")
     return fdir
 
-def main():
-  project = AndroidProject(os.getcwd())
+def main(directory):
+  project = AndroidProject(directory)
   bdir = project.get_art_directory()
   scalable_dirs = [d for d in os.listdir(bdir) if d.startswith("scalable")]
   
@@ -72,6 +72,12 @@ def main():
 
 
 if __name__ == "__main__":
-	main()
-
+  parser = optparse.OptionParser()
+  parser.add_option('--directory',
+            dest="directory",
+            default=os.getcwd(),
+            type="string",
+            )
+  options, remainder = parser.parse_args()
+  main(options.directory)
 
